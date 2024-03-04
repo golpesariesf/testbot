@@ -19,7 +19,7 @@ def send_to_user(update: Update, context: CallbackContext) -> None:
     context.bot.send_message(chat_id=user_id, text=f"New UUID HEX: {unique_id_str}")
 
 # ساخت ربات و اتصال به تلگرام
-updater = Updater(token=bot_token, use_context=True)
+updater = Updater(bot=Bot(token=bot_token), use_context=True)
 dispatcher = updater.dispatcher
 
 # تعریف دستورها
