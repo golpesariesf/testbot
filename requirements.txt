@@ -1,2 +1,2 @@
-gunicorn
-telebot
+gunicorn = 21.2
+telebot = 20.1
