@@ -1,4 +1,4 @@
 gunicorn
 telebot
-telegram.ext
+python-telegram-bot==20.3
 telegram
