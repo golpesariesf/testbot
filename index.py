@@ -3,7 +3,7 @@ from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext
 
 # تنظیمات
-bot_token = "YOUR_BOT_TOKEN"
+bot_token = "7137673728:AAE85wL1RBYskkrlCZaIzhEbgKmiEBiefDI"
 
 # تابع برای ساخت کد UUID
 def generate_uuid(update: Update, context: CallbackContext) -> None:
