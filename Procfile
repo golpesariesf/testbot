@@ -1,1 +1,2 @@
-web: gunicorn webhookuuid14.index:updater
+web: gunicorn -b 0.0.0.0:$PORT webhookuuid14.index:updater
+
