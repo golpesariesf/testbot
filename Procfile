@@ -1,1 +1,1 @@
-web: gunicorn testbot.index:updater
+web: python -m testbot.index:updater
