@@ -16,10 +16,9 @@ currency_from = "usd"
 # دریافت پورت از متغیر محیطی یا استفاده از 5000 به عنوان پورت پیش‌فرض
 port = int(os.environ.get("PORT", 5000))
 
-# تنظیم پورت برنامه
+# ساخت ربات و اتصال به تلگرام
 updater = Updater(token=bot_token, use_context=True)
-updater.start_webhook(listen="0.0.0.0", port=port, url_path=bot_token)
-updater.bot.setWebhook(f"https://biamoozim-b6696acc0db5.herokuapp.com/{bot_token}")
+dispatcher = updater.dispatcher
 
 # تابع برای ساخت کد UUID
 def generate_uuid(update: Update, context: CallbackContext) -> None:
@@ -113,7 +112,9 @@ def check_payment_status(update: Update, context: CallbackContext) -> None:
     else:
         context.bot.send_message(chat_id=update.effective_chat.id, text=f"خطا در بررسی وضعیت پرداخت با کد {payment_id}")
 
-# تعریف دستور بررسی وضعیت پرداخت
+# تعریف دستورها
+dispatcher.add_handler(CommandHandler("generate_uuid", generate_uuid))
+dispatcher.add_handler(CommandHandler("start", start))
 dispatcher.add_handler(CommandHandler("check_payment_status", check_payment_status))
 
 # شروع گوش کردن به دستورات
