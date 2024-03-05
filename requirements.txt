@@ -8,3 +8,4 @@ uuid==1.30
 Flask==1.1.2
 pyTelegramBotAPI==3.8.1
 Jinja2==2.11.3
+markupsafe==2.1.1
