@@ -90,6 +90,23 @@ def get_payment_status(payment_id):
     else:
         return None
 
+# تابع برای بررسی وضعیت پرداخت
+def check_payment_status(update: Update, context: CallbackContext) -> None:
+    if len(context.args) == 0:
+        context.bot.send_message(chat_id=update.effective_chat.id, text="برای بررسی وضعیت پرداخت، کد پرداخت را به عنوان پارامتر وارد کنید.")
+        return
+
+    payment_id = context.args[0]
+    payment_status = get_payment_status(payment_id)
+
+    if payment_status is not None:
+        context.bot.send_message(chat_id=update.effective_chat.id, text=f"وضعیت پرداخت با کد {payment_id}: {payment_status}")
+    else:
+        context.bot.send_message(chat_id=update.effective_chat.id, text=f"خطا در بررسی وضعیت پرداخت با کد {payment_id}")
+
+# تعریف دستور بررسی وضعیت پرداخت
+dispatcher.add_handler(CommandHandler("check_payment_status", check_payment_status))
+
 # ساخت ربات و اتصال به تلگرام
 updater = Updater(token=bot_token, use_context=True)
 dispatcher = updater.dispatcher
@@ -97,7 +114,7 @@ dispatcher = updater.dispatcher
 # تعریف دستورها
 dispatcher.add_handler(CommandHandler("generate_uuid", generate_uuid))
 dispatcher.add_handler(CommandHandler("start", start))
-dispatcher.add_handler(CommandHandler("start_payment", lambda update, context: create_and_send_payment_link(update, context, fixed_amount, currency_from, currency_from)))
+dispatcher.add_handler(CommandHandler("start_payment", lambda update, context: create_and_send_payment_link(update, context, fixed_amount, currency_from, "btc")))
 
 # شروع گوش کردن به دستورات
 updater.start_polling()
