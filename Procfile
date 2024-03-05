@@ -1,2 +1,2 @@
-web: gunicorn -b 0.0.0.0:$PORT webhookuuid14.index:updater
+web: gunicorn index:app --log-file -
 
