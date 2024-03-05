@@ -1,24 +1,26 @@
-﻿import uuid
+from flask import Flask, request
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext
+import uuid
 import requests
-import os
+
+app = Flask(__name__)
 
 # تنظیمات
-bot_token = "7137673728:AAE85wL1RBYskkrlCZaIzhEbgKmiEBiefDI"
-api_key = "D37DNS7-VH1MPNS-QGM99PV-SQZQG2A"
-api_url = "https://api.nowpayments.io/v1"
+bot_token = '7137673728:AAE85wL1RBYskkrlCZaIzhEbgKmiEBiefDI'
+api_key = 'D37DNS7-VH1MPNS-QGM99PV-SQZQG2A'
+api_url = f'https://webhookuuid14-04317876def6.herokuapp.com/{bot_token}'
 
 # مقدار ثابت
 fixed_amount = 25.0
 currency_from = "usd"
 
-# دریافت پورت از متغیر محیطی یا استفاده از 5000 به عنوان پورت پیش‌فرض
-port = int(os.environ.get("PORT", 5000))
-
-# ساخت ربات و اتصال به تلگرام
-updater = Updater(token=bot_token, use_context=True)
-dispatcher = updater.dispatcher
+# تابع برای دریافت پست‌های ورودی از تلگرام
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    update = Update.de_json(request.get_json(force=True), updater.bot)
+    dp.process_update(update)
+    return 'OK'
 
 # تابع برای ساخت کد UUID
 def generate_uuid(update: Update, context: CallbackContext) -> None:
@@ -117,8 +119,10 @@ dispatcher.add_handler(CommandHandler("generate_uuid", generate_uuid))
 dispatcher.add_handler(CommandHandler("start", start))
 dispatcher.add_handler(CommandHandler("check_payment_status", check_payment_status))
 
-# شروع گوش کردن به دستورات
-updater.start_polling()
+if __name__ == "__main__":
+    updater.start_webhook(listen="0.0.0.0", port=port, url_path="webhook")
+    updater.bot.setWebhook(url="https://your-heroku-app-name.herokuapp.com/webhook")
+    updater.idle()
 
-# اجرای ربات تا زمانی که متوقف شود
-updater.idle()
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
