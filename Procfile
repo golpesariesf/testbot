@@ -1,2 +1,2 @@
-web: gunicorn index:app --log-file -
+web: python3 main.py
 
