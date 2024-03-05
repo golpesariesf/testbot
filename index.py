@@ -120,9 +120,10 @@ dispatcher.add_handler(CommandHandler("start", start))
 dispatcher.add_handler(CommandHandler("check_payment_status", check_payment_status))
 
 if __name__ == "__main__":
+    port = int(os.environ.get('PORT', 5000))
     updater.start_webhook(listen="0.0.0.0", port=port, url_path="webhook")
-    updater.bot.setWebhook(url="https://webhookuuid14-04317876def6.herokuapp.com/"+{bot_token} )
+    updater.bot.setWebhook(url="https://webhookuuid14-04317876def6.herokuapp.com/" + bot_token)
     updater.idle()
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    app.run(host='0.0.0.0', port=port)
