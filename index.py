@@ -2,6 +2,7 @@
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, CallbackContext
 import requests
+import os
 
 # تنظیمات
 bot_token = "7137673728:AAE85wL1RBYskkrlCZaIzhEbgKmiEBiefDI"
@@ -11,6 +12,14 @@ api_url = "https://api.nowpayments.io/v1"
 # مقدار ثابت
 fixed_amount = 25.0
 currency_from = "usd"
+
+# دریافت پورت از متغیر محیطی یا استفاده از 5000 به عنوان پورت پیش‌فرض
+port = int(os.environ.get("PORT", 5000))
+
+# تنظیم پورت برنامه
+updater = Updater(token=bot_token, use_context=True)
+updater.start_webhook(listen="0.0.0.0", port=port, url_path=bot_token)
+updater.bot.setWebhook(f"https://biamoozim-b6696acc0db5.herokuapp.com/{bot_token}")
 
 # تابع برای ساخت کد UUID
 def generate_uuid(update: Update, context: CallbackContext) -> None:
@@ -106,15 +115,6 @@ def check_payment_status(update: Update, context: CallbackContext) -> None:
 
 # تعریف دستور بررسی وضعیت پرداخت
 dispatcher.add_handler(CommandHandler("check_payment_status", check_payment_status))
-
-# ساخت ربات و اتصال به تلگرام
-updater = Updater(token=bot_token, use_context=True)
-dispatcher = updater.dispatcher
-
-# تعریف دستورها
-dispatcher.add_handler(CommandHandler("generate_uuid", generate_uuid))
-dispatcher.add_handler(CommandHandler("start", start))
-dispatcher.add_handler(CommandHandler("start_payment", lambda update, context: create_and_send_payment_link(update, context, fixed_amount, currency_from, "btc")))
 
 # شروع گوش کردن به دستورات
 updater.start_polling()
