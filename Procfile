@@ -1,1 +1,1 @@
-web: gunicorn testbot.index:updater
+web: gunicorn webhookuuid14.index:updater
